@@ -17,14 +17,12 @@ func main() {
 	// Connectando a la base de datos sqlite previamente creada
 	db, err := sql.Open("sqlite", "./database/database.db")
 	if err != nil {
-		log.Printf("An error occur \n%s\n", err)
-		os.Exit(1)
+		log.Fatalf("An error occur trying to open sql: %s\n", err)
 	}
 
 	result, err := query.ManyQuery(db)
 	if err != nil {
-		log.Printf("[ERROR] An error while trying query users. \n%s\n", err)
-		os.Exit(1)
+		log.Fatalf("An error while trying query users: %s\n", err)
 	}
 
 	for _, f := range result {
@@ -33,7 +31,7 @@ func main() {
 
 	net, err := net.Listen("tcp", ":"+PORT)
 	if err != nil {
-		log.Fatalf("An error occur \n%s\n", err)
+		log.Fatalf("An error occur starting the server: %s\n", err)
 	}
 	defer db.Close()
 
